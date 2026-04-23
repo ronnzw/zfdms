@@ -36,4 +36,4 @@ jobs:
         uvx ruff check --exit-zero --statistics
     - name: Run tests
       run: |
-        uv run pytest
+        uvx pytest

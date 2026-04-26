@@ -2,4 +2,4 @@
 
 import pytest
 
-from zfdms.models import DeviceConfig, Address, Contacts, Tax
+from zfdms.models.get_config import DeviceConfig, Address, Contacts, Tax

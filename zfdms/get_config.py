@@ -2,11 +2,14 @@
 import requests
 
 from dacite import from_dict
+from datetime import datetime
 
 from .exceptions import FDMSApiException
 from .models.get_config import (DeviceConfig,
 Address,
-Contacts,Tax
+Contacts,
+Tax, 
+DeviceOperatingMode
 )
 
 

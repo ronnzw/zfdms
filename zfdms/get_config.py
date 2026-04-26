@@ -1,7 +1,7 @@
 #!/usr/bin/env python
+import dacite 
 import requests
 
-from dacite import from_dict
 from datetime import datetime
 
 from .exceptions import FDMSApiException

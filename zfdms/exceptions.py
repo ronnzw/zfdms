@@ -1,5 +1,3 @@
-from typing import Optional
-from dacite import from_dict
 
 
 HTTP_STATUS_DESCRIPTIONS = {
@@ -120,9 +118,9 @@ class FDMSApiException(Exception):
         self,
         status_code: int,
         message: str,
-        uri: Optional[str] = None,
-        error_code: Optional[str] = None,
-        title: Optional[str] = None,
+        uri: str | None = None,
+        error_code: str | None = None,
+        title: str | None = None,
     ):
         self.status_code = status_code
         self.message = message
@@ -170,9 +168,9 @@ class FDMSValidationException(FDMSApiException):
         self,
         status_code: int,
         message: str,
-        uri: Optional[str] = None,
-        error_code: Optional[str] = None,
-        title: Optional[str] = None,
+        uri: str | None = None,
+        error_code: str | None = None,
+        title: str | None = None,
     ):
         super().__init__(status_code, message, uri, error_code, title)
 

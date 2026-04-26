@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 import pytest
-import requests
 
 """Tests for `zimra_zfdms` package."""
 
-from zfdms import client
 
 
 @pytest.fixture

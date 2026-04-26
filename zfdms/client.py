@@ -1,15 +1,12 @@
 #!/usr/bin/env python
+
 import requests
 
-from dacite import from_dict
-from datetime import datetime
-
-from models.get_config import DeviceOperatingMode
 from .exceptions import FDMSApiException, FDMSValidationException
 from .get_config import GetConfigClient
 
 
-class FdmsClient(object):
+class FdmsClient:
     """
     The main Fiscal Device Gateway API client.
 
@@ -72,7 +69,7 @@ class FdmsClient(object):
         :type  skip_ssl_validation: ``bool``
         """
         self.device_id = device_id
-        self.base_url = "https://{0}/api/v1".format(host)
+        self.base_url = f"https://{host}/api/v1"
         self.timeout = 30
 
         # Public session (no client certificate)
@@ -115,7 +112,7 @@ class FdmsClient(object):
         """
         try:
             result = self.session.get(
-                "{0}/{1}".format(self.base_url, uri),
+                f"{self.base_url}/{uri}",
                 params=params,
                 timeout=self.timeout,
             )
@@ -136,7 +133,7 @@ class FdmsClient(object):
         """
         try:
             result = self.session.post(
-                "{0}/{1}".format(self.base_url, uri),
+                f"{self.base_url}/{uri}",
                 json=data,
                 timeout=self.timeout,
             )
@@ -157,7 +154,7 @@ class FdmsClient(object):
         """
         try:
             result = self.public_session.get(
-                "{0}/{1}".format(self.base_url, uri),
+                f"{self.base_url}/{uri}",
                 params=params,
                 timeout=self.timeout,
             )
@@ -178,7 +175,7 @@ class FdmsClient(object):
         """
         try:
             result = self.public_session.post(
-                "{0}/{1}".format(self.base_url, uri),
+                f"{self.base_url}/{uri}",
                 json=data,
                 timeout=self.timeout,
             )
@@ -222,7 +219,7 @@ class FdmsClient(object):
                 error_code=error_code,
                 title=title,
             )
-    
+
     @property
     def get_config(self):
         """

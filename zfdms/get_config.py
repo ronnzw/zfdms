@@ -1,21 +1,16 @@
 #!/usr/bin/env python
-import dacite 
-import requests
-
 from datetime import datetime
 
+import dacite
+import requests
+
 from .exceptions import FDMSApiException
-from .models.get_config import (DeviceConfig,
-Address,
-Contacts,
-Tax, 
-DeviceOperatingMode
-)
+from .models.get_config import DeviceConfig, DeviceOperatingMode
 
 
-class GetConfigClient(object):
+class GetConfigClient:
     """Fetching configuration details for a device from the FDMS API."""
-    
+
     def __init__(self, client):
         self.fdms_client = client
 

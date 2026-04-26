@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Optional, List
 from datetime import datetime
 from enum import Enum
 
@@ -32,7 +31,7 @@ class Tax:
     taxPercent is absent for exempt taxes.
     """
     taxName: str = ""
-    taxPercent: Optional[float] = None
+    taxPercent: float | None = None
 
 
 @dataclass
@@ -46,11 +45,11 @@ class DeviceConfig:
     deviceOperatingMode: DeviceOperatingMode = DeviceOperatingMode.ONLINE
     taxPayerDayMaxHrs: int = 0
     taxpayerDayEndNotificationHrs: int = 0
-    applicableTaxes: List[Tax] = field(default_factory=list)
-    certificateValidTill: Optional[datetime] = None
+    applicableTaxes: list[Tax] = field(default_factory=list)
+    certificateValidTill: datetime | None = None
     qrUrl: str = ""
-    vatNumber: Optional[str] = None
-    deviceBranchContacts: Optional[Contacts] = None
+    vatNumber: str | None = None
+    deviceBranchContacts: Contacts | None = None
 
 
 # ── Factory / Deserializer ────────────────────────────────────────────────────
@@ -71,4 +70,4 @@ class DeviceConfig:
 #             cast=[DeviceOperatingMode],
 #         )
 #     )
-    
+

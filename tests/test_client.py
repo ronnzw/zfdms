@@ -1,10 +1,14 @@
 #!/usr/bin/env python
+from unittest.mock import MagicMock
+
 import pytest
 import requests
-from unittest.mock import MagicMock, patch, PropertyMock
 
 from zfdms.client import FdmsClient
-from zfdms.exceptions import (FDMSApiException, FDMSValidationException,)
+from zfdms.exceptions import (
+    FDMSApiException,
+    FDMSValidationException,
+)
 
 
 @pytest.fixture
@@ -350,7 +354,7 @@ class TestErrorHandling:
         assert exc_info.value.error_code is None
 
 
-# ── get_config property test 
+# ── get_config property test
 class TestGetConfigProperty:
 
     def test_get_config_property_returns_same_instance(self, client):

@@ -30,6 +30,7 @@ test = [
     "ruff",  # linting
     "ty", # checking types
     "ipdb", # debugging
+    "requests>=2.33.1",
 ]
 
 [project.urls]

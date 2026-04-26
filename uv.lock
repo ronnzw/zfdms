@@ -815,6 +815,7 @@ test = [
     { name = "coverage" },
     { name = "ipdb" },
     { name = "pytest" },
+    { name = "requests" },
     { name = "ruff" },
     { name = "ty" },
 ]
@@ -828,6 +829,7 @@ requires-dist = [
     { name = "pytest", marker = "extra == 'test'" },
     { name = "pytest-cov", specifier = ">=7.1.0" },
     { name = "requests", specifier = ">=2.33.1" },
+    { name = "requests", marker = "extra == 'test'", specifier = ">=2.33.1" },
     { name = "rich" },
     { name = "ruff", marker = "extra == 'test'" },
     { name = "ty", marker = "extra == 'test'" },

@@ -2,7 +2,9 @@
 import requests
 
 from dacite import from_dict
+from datetime import datetime
 
+from models.get_config import DeviceOperatingMode
 from .exceptions import FDMSApiException, FDMSValidationException
 from .get_config import GetConfigClient
 

@@ -32,7 +32,7 @@ class GetConfigClient(object):
             )
             response.raise_for_status()
             data = response.json()
-            return parse_device_config(data=data)
+            return self.parse_device_config(data=data)
         except requests.HTTPError as http_err:
             raise FDMSApiException.from_response(http_err.response) from http_err
 

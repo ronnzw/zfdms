@@ -3,7 +3,7 @@ import requests
 
 from dacite import from_dict
 
-from .exceptions import FDMSApiException
+from .exceptions import FDMSApiException, FDMSValidationException
 from .get_config import GetConfigClient
 
 

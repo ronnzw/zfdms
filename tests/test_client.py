@@ -133,7 +133,7 @@ class TestClientInit:
         assert client.public_session.proxies == {"https": "https://myproxy.co.zw"}
 
     def test_get_config_client_is_initialised(self, client):
-        from fdms.get_config import GetConfigClient
+        from zfdms.get_config import GetConfigClient
         assert isinstance(client._get_config, GetConfigClient)
 
 

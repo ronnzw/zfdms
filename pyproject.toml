@@ -19,6 +19,7 @@ dependencies = [
   "dacite",
   "pytest>=9.0.3",
   "requests>=2.33.1",
+  "pytest-cov>=7.1.0",
 ]
 requires-python = ">= 3.10"
 

@@ -69,7 +69,7 @@ class FdmsClient:
         :type  skip_ssl_validation: ``bool``
         """
         self.device_id = device_id
-        self.base_url = f"https://{host}/api/v1"
+        self.base_url = f"https://{host}/Device/v1"
         self.timeout = 30
 
         # Public session (no client certificate)

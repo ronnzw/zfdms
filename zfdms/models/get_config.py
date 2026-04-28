@@ -36,38 +36,17 @@ class Tax:
 
 @dataclass
 class DeviceConfig:
-    operationID: str = ""
-    taxPayerName: str = ""
-    taxPayerTIN: str = ""
-    deviceSerialNo: str = ""
-    deviceBranchName: str = ""
+    operationID: str
+    taxPayerName: str
+    taxPayerTIN: str
+    deviceSerialNo: str
+    deviceBranchName: str
     deviceBranchAddress: Address = field(default_factory=Address)
-    deviceOperatingMode: DeviceOperatingMode = DeviceOperatingMode.ONLINE
+    deviceOperatingMode: DeviceOperatingMode = DeviceOperatingMode
     taxPayerDayMaxHrs: int = 0
     taxpayerDayEndNotificationHrs: int = 0
     applicableTaxes: list[Tax] = field(default_factory=list)
     certificateValidTill: datetime | None = None
-    qrUrl: str = ""
+    qrUrl: str = ''
     vatNumber: str | None = None
     deviceBranchContacts: Contacts | None = None
-
-
-# ── Factory / Deserializer ────────────────────────────────────────────────────
-
-# def parse_device_config(data: dict) -> DeviceConfig:
-#     """
-#     Parse a raw API response dict into a DeviceConfig dataclass.
-#     Handles nested objects, optional fields, and datetime parsing.
-#     """
-#     return dacite.from_dict(
-#         data_class=DeviceConfig,
-#         data=data,
-#         config=dacite.Config(
-#             type_hooks={
-#                 datetime: lambda v: datetime.fromisoformat(v) if v else None,
-#                 DeviceOperatingMode: DeviceOperatingMode,
-#             },
-#             cast=[DeviceOperatingMode],
-#         )
-#     )
-

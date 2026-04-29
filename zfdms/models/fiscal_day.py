@@ -30,8 +30,8 @@ class FiscalDay:
 
 @dataclass
 class FiscalDayOpen:
-    fiscalDayNo: int = 0
-    fiscalDayOpened: datetime | None = None
+    operationID: int
+    fiscalDayNo: int
 
 
 @dataclass
@@ -46,8 +46,5 @@ class FiscalDayCounter:
 
 @dataclass
 class FiscalDayClose:
-    fiscalDayNo: int = 0
-    fiscalDayCounters: FiscalDayCounter = field(default_factory=FiscalDayCounter)
-    fiscalDayDeviceSignature: FiscalDayServerSignature = field(default_factory=FiscalDayServerSignature)
-    receiptCounter: int = 0
+    operationID: str
 

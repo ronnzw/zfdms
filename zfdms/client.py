@@ -3,6 +3,7 @@
 import requests
 
 from .exceptions import FDMSApiException, FDMSValidationException
+from .fiscal_day import FiscalDayClient
 from .get_config import GetConfigClient
 
 
@@ -99,6 +100,7 @@ class FdmsClient:
             )
 
             self._get_config = GetConfigClient(self)
+            self._fiscal_day = FiscalDayClient(self)
 
     def get(self, uri, params=None):
         """

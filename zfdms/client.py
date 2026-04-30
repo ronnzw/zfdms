@@ -6,6 +6,7 @@ from .fiscal_day import FiscalDayClient
 from .get_config import GetConfigClient
 from .receipts import ReceiptsClient
 from .submit_file import SubmitFileClient
+from .certificates import CertificatesClient
 
 
 class FdmsClient:
@@ -104,6 +105,7 @@ class FdmsClient:
             self._fiscal_day = FiscalDayClient(self)
             self._receipts = ReceiptsClient(self)
             self._submit_file = SubmitFileClient(self)
+            self._server_requests = CertificatesClient(self)
 
     def get(self, uri, params=None):
         """
@@ -267,3 +269,12 @@ class FdmsClient:
         :rtype: :class:`zfdms.get_file_status.GetFileStatusClient`
         """
         return self._get_file_status
+
+    @property
+    def server_requests(self):
+        """
+        Get the CertificatesClient for managing server certificate operations.
+
+        :rtype: :class:`zfdms.certificates.CertificatesClient`
+        """
+        return self._server_requests

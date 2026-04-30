@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 import requests
 
-from dacite import from_dict
-
 from .exceptions import FDMSApiException, FDMSValidationException
+from .fiscal_day import FiscalDayClient
 from .get_config import GetConfigClient
+from .receipts import ReceiptsClient
+from .submit_file import SubmitFileClient
+from .certificates import CertificatesClient
 
 
-class FdmsClient(object):
+class FdmsClient:
     """
     The main Fiscal Device Gateway API client.
 
@@ -70,7 +72,7 @@ class FdmsClient(object):
         :type  skip_ssl_validation: ``bool``
         """
         self.device_id = device_id
-        self.base_url = "https://{0}/api/v1".format(host)
+        self.base_url = f"https://{host}/Device/v1"
         self.timeout = 30
 
         # Public session (no client certificate)
@@ -100,6 +102,10 @@ class FdmsClient(object):
             )
 
             self._get_config = GetConfigClient(self)
+            self._fiscal_day = FiscalDayClient(self)
+            self._receipts = ReceiptsClient(self)
+            self._submit_file = SubmitFileClient(self)
+            self._server_requests = CertificatesClient(self)
 
     def get(self, uri, params=None):
         """
@@ -113,7 +119,7 @@ class FdmsClient(object):
         """
         try:
             result = self.session.get(
-                "{0}/{1}".format(self.base_url, uri),
+                f"{self.base_url}/{uri}",
                 params=params,
                 timeout=self.timeout,
             )
@@ -134,7 +140,7 @@ class FdmsClient(object):
         """
         try:
             result = self.session.post(
-                "{0}/{1}".format(self.base_url, uri),
+                f"{self.base_url}/{uri}",
                 json=data,
                 timeout=self.timeout,
             )
@@ -155,7 +161,7 @@ class FdmsClient(object):
         """
         try:
             result = self.public_session.get(
-                "{0}/{1}".format(self.base_url, uri),
+                f"{self.base_url}/{uri}",
                 params=params,
                 timeout=self.timeout,
             )
@@ -176,7 +182,7 @@ class FdmsClient(object):
         """
         try:
             result = self.public_session.post(
-                "{0}/{1}".format(self.base_url, uri),
+                f"{self.base_url}/{uri}",
                 json=data,
                 timeout=self.timeout,
             )
@@ -220,7 +226,7 @@ class FdmsClient(object):
                 error_code=error_code,
                 title=title,
             )
-    
+
     @property
     def get_config(self):
         """
@@ -229,3 +235,46 @@ class FdmsClient(object):
         :rtype: :class:`zfdms.get_config.GetConfigClient`
         """
         return self._get_config
+
+    @property
+    def fiscal_day(self):
+        """
+        Get the FiscalDayClient for managing fiscal day operations.
+
+        :rtype: :class:`zfdms.fiscal_day.FiscalDayClient`
+        """
+        return self._fiscal_day
+
+    @property
+    def receipts(self):
+        """
+        Get the ReceiptsClient for managing receipt operations.
+
+        :rtype: :class:`zfdms.receipts.ReceiptsClient`
+        """
+        return self._receipts
+
+    @property
+    def submit_file(self):
+        """
+        Get the SubmitFileClient for managing file submission and status.
+
+        :rtype: :class:`zfdms.submit_file.SubmitFileClient`
+        """
+        return self._submit_file        
+
+    @property
+    def get_file_status(self):
+        """
+        :rtype: :class:`zfdms.get_file_status.GetFileStatusClient`
+        """
+        return self._get_file_status
+
+    @property
+    def server_requests(self):
+        """
+        Get the CertificatesClient for managing server certificate operations.
+
+        :rtype: :class:`zfdms.certificates.CertificatesClient`
+        """
+        return self._server_requests

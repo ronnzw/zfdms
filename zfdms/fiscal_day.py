@@ -71,81 +71,71 @@ class FiscalDayClient:
         )
         return parse_data(fiscal_day, FiscalDayOpen)
 
-    def close_day(self, 
+    def close_day(
+        self,
         deviceID: int,
         fiscalDayNo: int,
         fiscalDayCounters: list[dict],
-        fiscalCounterType: str,
-        fiscalCounterCurrency: str,
-        fiscalCounterTaxPercent: int,
-        fiscalCounterTaxID: int,
-        fiscalCounterMoneyType: str,
-        fiscalCounterValue: int,
         fiscalDayDeviceSignature: dict,
         receiptCounter: int,
     ) -> FiscalDayClose:
-        """Initiate fiscal day closure procedure. This method is allowed when fiscal days status is “FiscalDayOpened” or “FiscalDayCloseFailed”. 
-        
-        In case fiscal day contains at least one “Grey” or “Red” receipt (as specified Validation errors), Fiscalisation Backend will respond to closeDay request with error (fiscal day will remain opened). Otherwise if fiscal day does not have “Grey” and “Red” receipts, validation of submitted closeDay request will be executed. 
-        
-        In case of fiscal day validation fails (as specified below in “Validation rules”), fiscal day remains opened and its status is changed to “FiscalDayCloseFailed”.
+        """
+        Initiate fiscal day closure procedure.
 
-        :param deviceID: Device's Identification ID.
+        This method is allowed when fiscal day status is "FiscalDayOpened" or
+        "FiscalDayCloseFailed". This method is asynchronous — FDMS acknowledges
+        the request synchronously but processes it asynchronously.
+
+        If the fiscal day contains at least one "Grey" or "Red" receipt, FDMS
+        will respond with an error and the fiscal day will remain opened.
+
+        If fiscal day validation fails, the fiscal day remains opened and its
+        status is changed to "FiscalDayCloseFailed".
+
+        Note: Zero value counters must not be submitted in fiscalDayCounters.
+        Note: Cannot be sent if DeviceOperatingMode is Offline (returns DEV01).
+
+        :param deviceID: Device identification ID.
         :type  deviceID: ``int``
 
-        :param fiscalDayNo: Fiscal day number. FiscalDayNo must be the same as provided/received fiscalDayNo value alue in openDay request.
+        :param fiscalDayNo: Fiscal day number. Must match the fiscalDayNo
+                            received in the openDay request.
         :type  fiscalDayNo: ``int``
 
-        :param fiscalDayCounters: List of counters for each sale.
-        :type  fiscalDayCounters: ``list``
+        :param fiscalDayCounters: List of fiscal counters for the day.
+                                Each counter must include fiscalCounterType,
+                                fiscalCounterCurrency and fiscalCounterValue.
+                                fiscalCounterTaxID and fiscalCounterTaxPercent
+                                are required for "byTax" counter types.
+                                fiscalCounterMoneyType is required for
+                                "BalanceByMoneyType" counter type.
+                                Zero value counters must not be submitted.
+        :type  fiscalDayCounters: ``list[dict]``
 
-        :param fiscalCounterType: Fiscal counter type.
-        :type  fiscalCounterType: ``str``
+        :param fiscalDayDeviceSignature: SHA256 hash of fiscal day report fields
+                                        and device signature using device private key.
+        :type  fiscalDayDeviceSignature: ``dict``
 
-        :param fiscalCounterCurrency: Fiscal counter currency (ISO 4217 currency code).
-        :type  fiscalCounterCurrency: ``str``
-
-        :param fiscalCounterTaxID: Tax ID of fiscal counter. Must be provided for all fiscal counter types “byTax”.
-        :type  fiscalCounterTaxID: ``int``
-
-        :param fiscalCounterTaxPercent: Tax percentage of fiscal counter.
-        :type  fiscalCounterTaxPercent: ``int``
-
-        :param fiscalCounterMoneyType: Code of payment mean of fiscal counter.
-        :type  fiscalCounterMoneyType: ``str``
-
-        :param fiscalCounterValue: Fiscal counter value in counter currency.
-        :type  fiscalCounterValue: ``int``
-
-        :param receiptCounter: ReceiptCounter value of last receipt of current fiscal day.
+        :param receiptCounter: receiptCounter value of the last receipt of the current fiscal day.
         :type  receiptCounter: ``int``
 
-
-        :return: A FiscalDayClose dataclass instance with details about the closed day.
+        :return: A FiscalDayClose dataclass instance with the operation details.
         :rtype: FiscalDayClose
-        :raises FDMSApiException: If the API returns an error response.       
+
+        :raises FDMSApiException: If the API returns an error response.
+        :raises FDMSValidationException: If fiscal day validation fails (FISC03, FISC04).
         """
 
         params = {
-            "deviceID": deviceID,
             "fiscalDayNo": fiscalDayNo,
             "fiscalDayCounters": fiscalDayCounters,
-            "fiscalCounterType": fiscalCounterType,
-            "fiscalCounterCurrency": fiscalCounterCurrency,
+            "fiscalDayDeviceSignature": fiscalDayDeviceSignature,
+            "receiptCounter": receiptCounter,
         }
 
-        if fiscalCounterTaxPercent:
-            params.update({"fiscalCounterTaxPercent": fiscalCounterTaxPercent})
-        elif fiscalCounterTaxID:
-            params.update({"fiscalCounterTaxID": fiscalCounterTaxID})
-        elif fiscalCounterMoneyType:
-            params.update({"fiscalCounterMoneyType": fiscalCounterMoneyType})
-        else:
-            pass
-        
         fiscal_day = self.client.post(
-            f'{self.deviceID}/CloseDay', 
-            {'data': params}
+            f"{deviceID}/CloseDay",
+            params,
         )
         return parse_data(fiscal_day, FiscalDayClose)
 

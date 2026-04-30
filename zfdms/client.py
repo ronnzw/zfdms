@@ -1,10 +1,11 @@
 #!/usr/bin/env python
-
 import requests
 
 from .exceptions import FDMSApiException, FDMSValidationException
 from .fiscal_day import FiscalDayClient
 from .get_config import GetConfigClient
+from .receipts import ReceiptsClient
+from .submit_file import SubmitFileClient
 
 
 class FdmsClient:
@@ -101,6 +102,8 @@ class FdmsClient:
 
             self._get_config = GetConfigClient(self)
             self._fiscal_day = FiscalDayClient(self)
+            self._receipts = ReceiptsClient(self)
+            self._submit_file = SubmitFileClient(self)
 
     def get(self, uri, params=None):
         """
@@ -230,3 +233,37 @@ class FdmsClient:
         :rtype: :class:`zfdms.get_config.GetConfigClient`
         """
         return self._get_config
+
+    @property
+    def fiscal_day(self):
+        """
+        Get the FiscalDayClient for managing fiscal day operations.
+
+        :rtype: :class:`zfdms.fiscal_day.FiscalDayClient`
+        """
+        return self._fiscal_day
+
+    @property
+    def receipts(self):
+        """
+        Get the ReceiptsClient for managing receipt operations.
+
+        :rtype: :class:`zfdms.receipts.ReceiptsClient`
+        """
+        return self._receipts
+
+    @property
+    def submit_file(self):
+        """
+        Get the SubmitFileClient for managing file submission and status.
+
+        :rtype: :class:`zfdms.submit_file.SubmitFileClient`
+        """
+        return self._submit_file        
+
+    @property
+    def get_file_status(self):
+        """
+        :rtype: :class:`zfdms.get_file_status.GetFileStatusClient`
+        """
+        return self._get_file_status
